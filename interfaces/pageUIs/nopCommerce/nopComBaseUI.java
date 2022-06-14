@@ -20,4 +20,8 @@ public class nopComBaseUI {
     public static final String DYNAMIC_RADIO_BOX_LABEL = "//label[text() = '%s']/preceding-sibling::input";
 
     public static final String DYNAMIC_DROPDOWN_BY_LABEL = "//label[contains(string() , '%s')]/following-sibling::select";
+
+    public static final String SUCCESS_MSG_BAR = "//div[@class = 'bar-notification success']";
+
+    public static final String ICON_CLOSE_BAR_HEADER = "//div//span[@class = 'close']";
 }

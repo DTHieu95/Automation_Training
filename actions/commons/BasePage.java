@@ -632,6 +632,16 @@ public class BasePage {
         return isElementSelected(driver , nopComBaseUI.DYNAMIC_RADIO_BOX_LABEL , labelName);
     }
 
+    public String getSuccessMsgBar(WebDriver driver){
+        waitElementVisible(driver , nopComBaseUI.SUCCESS_MSG_BAR);
+        return getElementText(driver , nopComBaseUI.SUCCESS_MSG_BAR);
+    }
+
+    public void clickIconCloseBarHeader(WebDriver driver){
+        waitElementClickable(driver , nopComBaseUI.ICON_CLOSE_BAR_HEADER);
+        clickToElement(driver , nopComBaseUI.ICON_CLOSE_BAR_HEADER);
+    }
+
 
     private Alert alert;
     private WebDriverWait explicitWait;

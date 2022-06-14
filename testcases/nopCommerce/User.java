@@ -228,5 +228,37 @@ public class User extends BaseTest {
     @Test
     public void TC_15(){
         addressPage.clickToAccountMenuSide(driver , "Change password");
+        changePasswordPage = pageGenerator.getChangePasswordPage(driver);
+        verifyEquals(changePasswordPage.getPageTitle(driver) , "My account - Change password");
+        changePasswordPage.sendKeyToDynamicTextbox(driver , "Old password" , password);
+        changePasswordPage.sendKeyToDynamicTextbox(driver , "New password" , newPass);
+        changePasswordPage.sendKeyToDynamicTextbox(driver , "Confirm password" , newPass);
+        changePasswordPage.clickToDynamicButton(driver , "Change password");
+
+        verifyEquals(changePasswordPage.getSuccessMsgBar(driver) , "Password was changed");
+        changePasswordPage.clickIconCloseBarHeader(driver);
+        changePasswordPage.clickToDynamicMenuHeader(driver , "Log out");
+        homePage = pageGenerator.getHomePage(driver);
+        verifyTrue(homePage.isWelcomeMsgDisplayed());
+
+        homePage.clickToDynamicMenuHeader(driver , "Log in");
+        loginPage = pageGenerator.getLoginPage(driver);
+
+        loginPage.sendKeyToDynamicTextbox(driver , "Email" , emailAddress);
+        loginPage.sendKeyToDynamicTextbox(driver , "Password" , password);
+        loginPage.clickToDynamicButton(driver , "Log in");
+        verifyEquals(loginPage.getSummaryErrorMsg(driver) , "Login was unsuccessful. Please correct the errors and try again.\nThe credentials provided are incorrect");
+
+        loginPage.sendKeyToDynamicTextbox(driver , "Email" , emailAddress);
+        loginPage.sendKeyToDynamicTextbox(driver , "Password" , newPass);
+        loginPage.clickToDynamicButton(driver , "Log in");
+
+        homePage = pageGenerator.getHomePage(driver);
+        verifyTrue(homePage.isWelcomeMsgDisplayed());
+    }
+
+    @Test
+    public void TC_16(){
+
     }
 }
