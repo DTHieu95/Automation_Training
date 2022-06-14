@@ -19,4 +19,20 @@ public class pageGenerator {
     public static registerPO getRegisterPage(WebDriver driver){
         return new registerPO(driver);
     }
+
+    public static customerInfoPO getCustomerInfoPage(WebDriver driver){
+        return new customerInfoPO(driver);
+    }
+
+    public static myProductReviewPO getMyProductReviewPage(WebDriver driver){
+        return new myProductReviewPO(driver);
+    }
+
+    public static changePasswordPO getChangePasswordPage(WebDriver driver){
+        return new changePasswordPO(driver);
+    }
+
+    public static addressPO getAddressPage(WebDriver driver){
+        return new addressPO(driver);
+    }
 }

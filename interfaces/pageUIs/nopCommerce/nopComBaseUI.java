@@ -14,4 +14,10 @@ public class nopComBaseUI {
     public static final String SUMMARY_ERROR_MSG = "//div[@class = 'message-error validation-summary-errors']";
 
     public static final String DYNAMIC_DROPDOWN_BY_NAME = "//select[@name = '%s']";
+
+    public static final String DYNAMIC_ACCOUNT_MENU_SIDE = "//div[@class = 'listbox']//a[contains(string() , '%s')]";
+
+    public static final String DYNAMIC_RADIO_BOX_LABEL = "//label[text() = '%s']/preceding-sibling::input";
+
+    public static final String DYNAMIC_DROPDOWN_BY_LABEL = "//label[contains(string() , '%s')]/following-sibling::select";
 }

@@ -597,6 +597,41 @@ public class BasePage {
         return getElementText(driver , nopComBaseUI.SUMMARY_ERROR_MSG);
     }
 
+    public String getAttributeInDynamicField(WebDriver driver , String labelName){
+        waitElementVisible(driver , nopComBaseUI.DYNAMIC_TEXTBOX_BY_LABEL , labelName);
+        return getAttributeValue(driver , nopComBaseUI.DYNAMIC_TEXTBOX_BY_LABEL , "value" , labelName);
+    }
+
+    public void selectValueInDynamicDropdown(WebDriver driver , String dropdownName , String value){
+        waitElementClickable(driver , nopComBaseUI.DYNAMIC_DROPDOWN_BY_NAME , dropdownName);
+        selectDropDownByText(driver , nopComBaseUI.DYNAMIC_DROPDOWN_BY_NAME , value , dropdownName);
+    }
+
+    public void selectValueInDynamicDropdownByLabel(WebDriver driver , String dropdownLabel , String value){
+        waitElementClickable(driver , nopComBaseUI.DYNAMIC_DROPDOWN_BY_LABEL , dropdownLabel);
+        selectDropDownByText(driver , nopComBaseUI.DYNAMIC_DROPDOWN_BY_LABEL , value , dropdownLabel);
+    }
+
+    public void clickToAccountMenuSide(WebDriver driver , String menuName){
+        waitElementClickable(driver , nopComBaseUI.DYNAMIC_ACCOUNT_MENU_SIDE , menuName);
+        clickToElement(driver , nopComBaseUI.DYNAMIC_ACCOUNT_MENU_SIDE , menuName);
+    }
+
+    public void checkDynamicRadioBox(WebDriver driver , String labelName){
+        waitElementClickable(driver , nopComBaseUI.DYNAMIC_RADIO_BOX_LABEL , labelName);
+        checktoCheckBoxOrRadio(driver , nopComBaseUI.DYNAMIC_RADIO_BOX_LABEL , labelName);
+    }
+
+    public String getSelectedValueInDynamicDropdown(WebDriver driver , String dropdownName){
+        waitElementVisible(driver , nopComBaseUI.DYNAMIC_DROPDOWN_BY_NAME , dropdownName);
+        return getSelectedItemFromDropDown(driver , nopComBaseUI.DYNAMIC_DROPDOWN_BY_NAME , dropdownName);
+    }
+
+    public boolean isDynamicRadioBoxSelected(WebDriver driver , String labelName){
+        waitElementVisible(driver , nopComBaseUI.DYNAMIC_RADIO_BOX_LABEL , labelName);
+        return isElementSelected(driver , nopComBaseUI.DYNAMIC_RADIO_BOX_LABEL , labelName);
+    }
+
 
     private Alert alert;
     private WebDriverWait explicitWait;
