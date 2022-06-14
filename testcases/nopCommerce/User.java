@@ -19,7 +19,10 @@ public class User extends BaseTest {
     myProductReviewPO myProductReviewPage;
     changePasswordPO changePasswordPage;
     addressPO addressPage;
-    String emailAddress , password , newPass;
+    prodDetailPO prodDetailPage;
+    searchPO searchPage;
+    shopCartPO shopCartPage;
+    String emailAddress , password , newPass , prodName;
     String FN , LN ,Company , Country , State , City , Add1 , Add2 , Zip , Phone , Fax , fullName;
 
     @Parameters({"browser", "url"})
@@ -43,6 +46,7 @@ public class User extends BaseTest {
         Phone = "098654321";
         Fax = "012445";
         fullName = FN + " " + LN;
+        prodName = "Build your own computer";
         homePage = pageGenerator.getHomePage(driver);
         verifyTrue(homePage.isWelcomeMsgDisplayed());
         homePage.clickToDynamicMenuHeader(driver , "Register");
@@ -259,6 +263,7 @@ public class User extends BaseTest {
 
     @Test
     public void TC_16(){
-
+        homePage.clickToDynamicLinkText(driver , prodName);
+        prodDetailPage = pageGenerator.getProdDetailPage(driver);
     }
 }

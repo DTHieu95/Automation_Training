@@ -642,6 +642,11 @@ public class BasePage {
         clickToElement(driver , nopComBaseUI.ICON_CLOSE_BAR_HEADER);
     }
 
+    public void clickToDynamicLinkText(WebDriver driver , String linkText){
+        waitElementClickable(driver , nopComBaseUI.DYNAMIC_LINK_TEXT , linkText);
+        clickToElement(driver , nopComBaseUI.DYNAMIC_LINK_TEXT , linkText);
+    }
+
 
     private Alert alert;
     private WebDriverWait explicitWait;

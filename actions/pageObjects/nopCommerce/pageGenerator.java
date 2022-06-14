@@ -35,4 +35,18 @@ public class pageGenerator {
     public static addressPO getAddressPage(WebDriver driver){
         return new addressPO(driver);
     }
+
+    public static prodDetailPO getProdDetailPage(WebDriver driver){
+        return new prodDetailPO(driver);
+    }
+
+    public static searchPO getSearchPage(WebDriver driver){
+        return new searchPO(driver);
+    }
+
+    public static shopCartPO getShopCartPage(WebDriver driver){
+        return new shopCartPO(driver);
+    }
+
+
 }
