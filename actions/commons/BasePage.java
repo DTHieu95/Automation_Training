@@ -642,6 +642,11 @@ public class BasePage {
         clickToElement(driver , nopComBaseUI.ICON_CLOSE_BAR_HEADER);
     }
 
+    public void clickToDynamicFooterLink(WebDriver driver , String menuName){
+        waitElementClickable(driver , nopComBaseUI.DYNAMIC_FOOTER_LINK , menuName);
+        clickToElement(driver , nopComBaseUI.DYNAMIC_FOOTER_LINK , menuName);
+    }
+
 
     private Alert alert;
     private WebDriverWait explicitWait;

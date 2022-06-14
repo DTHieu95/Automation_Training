@@ -24,4 +24,8 @@ public class nopComBaseUI {
     public static final String SUCCESS_MSG_BAR = "//div[@class = 'bar-notification success']";
 
     public static final String ICON_CLOSE_BAR_HEADER = "//div//span[@class = 'close']";
+
+    public static final String DYNAMIC_FOOTER_LINK = "//div[@class = 'footer']//a[text() = '%s']";
+
+
 }
