@@ -9,6 +9,9 @@ import org.testng.annotations.Test;
 import pageObjects.nopCommerce.*;
 import pageObjects.nopCommerce.registerPO;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 public class User extends BaseTest {
     WebDriver driver;
 
@@ -19,8 +22,12 @@ public class User extends BaseTest {
     myProductReviewPO myProductReviewPage;
     changePasswordPO changePasswordPage;
     addressPO addressPage;
-    String emailAddress , password , newPass;
+    prodDetailPO prodDetailPage;
+    searchPO searchPage;
+    shopCartPO shopCartPage;
+    String emailAddress , password , newPass , prodName , prodName1;
     String FN , LN ,Company , Country , State , City , Add1 , Add2 , Zip , Phone , Fax , fullName;
+    ArrayList<String> listProdLenovo = new ArrayList<String>(Arrays.asList("Lenovo IdeaCentre 600 All-in-One PC" , "Lenovo Thinkpad X1 Carbon Laptop"));
 
     @Parameters({"browser", "url"})
 
@@ -43,6 +50,8 @@ public class User extends BaseTest {
         Phone = "098654321";
         Fax = "012445";
         fullName = FN + " " + LN;
+        prodName = "Build your own computer";
+        prodName1 = "Apple MacBook Pro 13-inch";
         homePage = pageGenerator.getHomePage(driver);
         verifyTrue(homePage.isWelcomeMsgDisplayed());
         homePage.clickToDynamicMenuHeader(driver , "Register");
@@ -259,6 +268,67 @@ public class User extends BaseTest {
 
     @Test
     public void TC_16(){
-
+        homePage.clickToDynamicLinkText(driver , prodName);
+        prodDetailPage = pageGenerator.getProdDetailPage(driver);
     }
+
+    @Test
+    public void TC_17(){
+        homePage.clickToDynamicFooterLink(driver , "Search");
+        searchPage = pageGenerator.getSearchPage(driver);
+        searchPage.clickToDynamicButton(driver , "Search");
+        verifyTrue(searchPage.isMsgWarningDisplayed());
+    }
+
+    @Test
+    public void TC_18(){
+        searchPage.sendKeyToDynamicTextbox(driver , "Search keyword" , "Macbook Pro 2050");
+        searchPage.clickToDynamicButton(driver , "Search");
+        verifyTrue(searchPage.isMsgNoResultDisplayed());
+    }
+
+    @Test
+    public void TC_19(){
+        searchPage.sendKeyToDynamicTextbox(driver , "Search keyword" , "Lenovo");
+        searchPage.clickToDynamicButton(driver , "Search");
+        verifyTrue(searchPage.isProductSearchResultsCorrect(listProdLenovo));
+    }
+
+    @Test
+    public void TC_20(){
+        searchPage.sendKeyToDynamicTextbox(driver , "Search keyword" , "Lenovo Thinkpad X1 Carbon Laptop");
+        searchPage.clickToDynamicButton(driver , "Search");
+        verifyTrue(searchPage.isProductSearchResultCorrect("Lenovo Thinkpad X1 Carbon Laptop"));
+    }
+
+    @Test
+    public void TC_21(){
+        searchPage.sendKeyToDynamicTextbox(driver , "Search keyword" , "Apple Macbook Pro");
+        searchPage.checkToDynamicCheckbox(driver , "Advanced search");
+        searchPage.selectValueInDynamicDropdownByLabel(driver , "Category" , "Computers");
+        searchPage.clickToDynamicButton(driver , "Search");
+        verifyTrue(searchPage.isMsgNoResultDisplayed());
+    }
+
+    @Test
+    public void TC_22(){
+        searchPage.checkToDynamicCheckbox(driver , "Automatically search sub categories");
+        searchPage.clickToDynamicButton(driver , "Search");
+        verifyTrue(searchPage.isProductSearchResultCorrect(prodName1));
+    }
+
+    @Test
+    public void TC_23(){
+        searchPage.selectValueInDynamicDropdownByLabel(driver , "Manufacturer" , "HP");
+        searchPage.clickToDynamicButton(driver , "Search");
+        verifyTrue(searchPage.isMsgNoResultDisplayed());
+    }
+
+    @Test
+    public void TC_24(){
+        searchPage.selectValueInDynamicDropdownByLabel(driver , "Manufacturer" , "Apple");
+        searchPage.clickToDynamicButton(driver , "Search");
+        verifyTrue(searchPage.isProductSearchResultCorrect(prodName1));
+    }
+
 }

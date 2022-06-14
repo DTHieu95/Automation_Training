@@ -2,9 +2,7 @@ package commons;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.List;
-import java.util.Random;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 
@@ -642,10 +640,107 @@ public class BasePage {
         clickToElement(driver , nopComBaseUI.ICON_CLOSE_BAR_HEADER);
     }
 
-    public void clickToDynamicFooterLink(WebDriver driver , String menuName){
-        waitElementClickable(driver , nopComBaseUI.DYNAMIC_FOOTER_LINK , menuName);
-        clickToElement(driver , nopComBaseUI.DYNAMIC_FOOTER_LINK , menuName);
+    public void clickToDynamicFooterLink(WebDriver driver , String menuName) {
+        waitElementClickable(driver, nopComBaseUI.DYNAMIC_FOOTER_LINK, menuName);
+        clickToElement(driver, nopComBaseUI.DYNAMIC_FOOTER_LINK, menuName);
     }
+
+    public void clickToDynamicLinkText(WebDriver driver , String linkText){
+        waitElementClickable(driver , nopComBaseUI.DYNAMIC_LINK_TEXT , linkText);
+        clickToElement(driver , nopComBaseUI.DYNAMIC_LINK_TEXT , linkText);
+    }
+
+    public void checkToDynamicCheckbox(WebDriver driver , String label){
+        waitElementClickable(driver , nopComBaseUI.DYNAMIC_CHECK_BOX , label);
+        checktoCheckBoxOrRadio(driver , nopComBaseUI.DYNAMIC_CHECK_BOX , label);
+    }
+
+    public void unCheckDynamicCheckbox(WebDriver driver , String label){
+        waitElementClickable(driver , nopComBaseUI.DYNAMIC_CHECK_BOX , label);
+        unCheckCheckBox(driver , nopComBaseUI.DYNAMIC_CHECK_BOX , label);
+    }
+
+    public void hoverMenuAndClickToSubListMenu(WebDriver driver , String menuName , String subListMenu){
+        waitElementClickable(driver , nopComBaseUI.DYNAMIC_HEADER_MENU , menuName);
+        hoverElement(driver , nopComBaseUI.DYNAMIC_HEADER_MENU , menuName);
+
+        waitElementClickable(driver , nopComBaseUI.DYNAMIC_SUBLIST_MENU , subListMenu);
+        clickToElement(driver , nopComBaseUI.DYNAMIC_SUBLIST_MENU , subListMenu);
+    }
+
+    public boolean isProdNameSortAscending(WebDriver driver){
+        ArrayList<String> productUIList = new ArrayList<String>();
+
+        List<WebElement> prodNameList = getElements(driver, nopComBaseUI.PRODUCT_NAME_TEXT);
+        for (WebElement prodName : prodNameList){
+            productUIList.add(prodName.getText());
+        }
+
+        ArrayList<String> prodSortList = new ArrayList<String>();
+        for (String product : productUIList){
+            prodSortList.add(product);
+        }
+        Collections.sort(prodSortList);
+
+        return productUIList.equals(prodSortList);
+    }
+
+    public boolean isProdNameSortDescending(WebDriver driver){
+        ArrayList<String> productUIList = new ArrayList<String>();
+
+        List<WebElement> prodNameList = getElements(driver, nopComBaseUI.PRODUCT_NAME_TEXT);
+        for (WebElement prodName : prodNameList){
+            productUIList.add(prodName.getText());
+        }
+
+        ArrayList<String> prodNameSortList = new ArrayList<String>();
+        for (String product : productUIList){
+            prodNameSortList.add(product);
+        }
+        Collections.sort(prodNameSortList);
+        Collections.reverse(prodNameSortList);
+
+        return productUIList.equals(prodNameSortList);
+    }
+
+    public boolean isProdPriceSortAscending(WebDriver driver){
+        ArrayList<Float> priceUIList = new ArrayList<Float>();
+
+        List<WebElement> prodPriceList = getElements(driver , nopComBaseUI.PRODUCT_PRICE);
+        for (WebElement prodPrice : prodPriceList){
+            priceUIList.add(Float.parseFloat(prodPrice.getText().replace("$" , "")));
+        }
+
+        ArrayList<Float> prodPriceSortList = new ArrayList<Float>();
+        for (Float price : priceUIList){
+            prodPriceSortList.add(price);
+        }
+
+        Collections.sort(prodPriceSortList);
+
+        return priceUIList.equals(prodPriceSortList);
+    }
+
+    public boolean isProdPriceSortDescending(WebDriver driver){
+        ArrayList<Float> priceUIList = new ArrayList<Float>();
+
+        List<WebElement> prodPriceList = getElements(driver , nopComBaseUI.PRODUCT_PRICE);
+        for (WebElement prodPrice : prodPriceList){
+            priceUIList.add(Float.parseFloat(prodPrice.getText().replace("$" , "")));
+        }
+
+        ArrayList<Float> prodPriceSortList = new ArrayList<Float>();
+        for (Float price : priceUIList){
+            prodPriceSortList.add(price);
+        }
+
+        Collections.sort(prodPriceSortList);
+        Collections.reverse(prodPriceSortList);
+
+        return priceUIList.equals(prodPriceSortList);
+    }
+
+
 
 
     private Alert alert;

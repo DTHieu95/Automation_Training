@@ -27,5 +27,15 @@ public class nopComBaseUI {
 
     public static final String DYNAMIC_FOOTER_LINK = "//div[@class = 'footer']//a[text() = '%s']";
 
+    public static final String DYNAMIC_CHECK_BOX = "//label[text() = '%s']/preceding-sibling::input";
 
+    public static final String DYNAMIC_LINK_TEXT = "//a[text() = '%s']";
+
+    public static final String DYNAMIC_HEADER_MENU = "//ul[@class = 'top-menu notmobile']//a[contains(string() , '%s')]";
+
+    public static final String DYNAMIC_SUBLIST_MENU = "//ul[@class = 'top-menu notmobile']//ul[@class = 'sublist first-level']//a[contains(string() , '%s')]";
+
+    public static final String PRODUCT_NAME_TEXT = "//h2[@class = 'product-title']//a";
+
+    public static final String PRODUCT_PRICE = "//div[@class = 'prices']//span";
 }
