@@ -25,6 +25,7 @@ public class User extends BaseTest {
     prodDetailPO prodDetailPage;
     searchPO searchPage;
     shopCartPO shopCartPage;
+    computerPO computerPage;
     String emailAddress , password , newPass , prodName , prodName1;
     String FN , LN ,Company , Country , State , City , Add1 , Add2 , Zip , Phone , Fax , fullName;
     ArrayList<String> listProdLenovo = new ArrayList<String>(Arrays.asList("Lenovo IdeaCentre 600 All-in-One PC" , "Lenovo Thinkpad X1 Carbon Laptop"));
@@ -329,6 +330,51 @@ public class User extends BaseTest {
         searchPage.selectValueInDynamicDropdownByLabel(driver , "Manufacturer" , "Apple");
         searchPage.clickToDynamicButton(driver , "Search");
         verifyTrue(searchPage.isProductSearchResultCorrect(prodName1));
+    }
+
+    @Test
+    public void TC_25(){
+        searchPage.hoverMenuAndClickToSubListMenu(driver , "Computer" , "Notebooks");
+        computerPage = pageGenerator.getComputerPage(driver);
+
+        computerPage.selectValueInDynamicDropdown(driver , "products-orderby" , "Name: A to Z");
+        verifyTrue(computerPage.isProdNameSortAscending(driver));
+
+        computerPage.selectValueInDynamicDropdown(driver , "products-orderby" , "Name: Z to A");
+        verifyTrue(computerPage.isProdNameSortDescending(driver));
+
+        computerPage.selectValueInDynamicDropdown(driver , "products-orderby" , "Price: Low to High");
+        verifyTrue(computerPage.isProdPriceSortAscending(driver));
+
+        computerPage.selectValueInDynamicDropdown(driver , "products-orderby" , "Price: High to Low");
+        verifyTrue(computerPage.isProdPriceSortDescending(driver));
+    }
+
+    @Test
+    public void TC_26(){
+        computerPage.selectValueInDynamicDropdown(driver , "products-pagesize" , "3");
+        verifyTrue(computerPage.isNumberProdDisplayedCorrect(driver , 3));
+        verifyEquals(computerPage.getCurrentPage(driver) , "1");
+        verifyTrue(computerPage.isDynamicIconPageDisplayed(driver , "next"));
+
+        computerPage.clickToDynamicLinkText(driver , "2");
+        computerPage.selectValueInDynamicDropdown(driver , "products-pagesize" , "3");
+        verifyEquals(computerPage.getCurrentPage(driver) , "2");
+        verifyTrue(computerPage.isNumberProdDisplayedCorrect(driver , 3));
+        verifyTrue(computerPage.isDynamicIconPageDisplayed(driver , "previous"));
+    }
+
+    @Test
+    public void TC_27(){
+        computerPage.selectValueInDynamicDropdown(driver , "products-pagesize" , "6");
+        verifyTrue(computerPage.isNumberProdDisplayedCorrect(driver , 6));
+        verifyTrue(computerPage.isDynamicIconPageUnDisplayed(driver , "next"));
+        verifyTrue(computerPage.isDynamicIconPageUnDisplayed(driver , "previous"));
+
+        computerPage.selectValueInDynamicDropdown(driver , "products-pagesize" , "9");
+        verifyTrue(computerPage.isNumberProdDisplayedCorrect(driver , 9));
+        verifyTrue(computerPage.isDynamicIconPageUnDisplayed(driver , "next"));
+        verifyTrue(computerPage.isDynamicIconPageUnDisplayed(driver , "previous"));
     }
 
 }

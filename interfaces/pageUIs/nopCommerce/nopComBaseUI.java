@@ -38,4 +38,8 @@ public class nopComBaseUI {
     public static final String PRODUCT_NAME_TEXT = "//h2[@class = 'product-title']//a";
 
     public static final String PRODUCT_PRICE = "//div[@class = 'prices']//span";
+
+    public static final String CURRENT_PAGE = "//li[@class = 'current-page']/span";
+
+    public static final String DYNAMIC_ICON_PAGE = "//li[@class = '%s-page']/a";
 }

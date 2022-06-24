@@ -48,5 +48,9 @@ public class pageGenerator {
         return new shopCartPO(driver);
     }
 
+    public static computerPO getComputerPage(WebDriver driver){
+        return new computerPO(driver);
+    }
+
 
 }

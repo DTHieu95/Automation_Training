@@ -318,6 +318,23 @@ public class BasePage {
         }
     }
 
+    public boolean isElementUndisplayed(WebDriver driver, String locator , String... params) {
+        overrideGlobalTimeout(driver, shortTimeout);
+        List<WebElement> elements = getElements(driver, getDynamicLocator(locator , params));
+        overrideGlobalTimeout(driver, longTimeout);
+
+        if (elements.size() == 0) {
+            System.out.println("Element not in DOM");
+            return true;
+        } else if (elements.size() > 0 && !elements.get(0).isDisplayed()) {
+            System.out.println("Element in DOM But not displayed");
+            return true;
+
+        } else {
+            return false;
+        }
+    }
+
     public void overrideGlobalTimeout(WebDriver driver, long timeout) {
         driver.manage().timeouts().implicitlyWait(timeout, TimeUnit.SECONDS);
     }
@@ -738,6 +755,32 @@ public class BasePage {
         Collections.reverse(prodPriceSortList);
 
         return priceUIList.equals(prodPriceSortList);
+    }
+
+    public boolean isNumberProdDisplayedCorrect(WebDriver driver , int expectNumber){
+        waitElementVisible(driver , nopComBaseUI.PRODUCT_NAME_TEXT);
+        boolean status = false;
+        if (getElementsize(driver , nopComBaseUI.PRODUCT_NAME_TEXT) > expectNumber){
+            status = false;
+            return status;
+        }else {
+            status = true;
+        }
+        return status;
+    }
+
+    public String getCurrentPage(WebDriver driver){
+        waitElementVisible(driver , nopComBaseUI.CURRENT_PAGE);
+        return getElementText(driver , nopComBaseUI.CURRENT_PAGE);
+    }
+
+    public boolean isDynamicIconPageDisplayed(WebDriver driver , String icon){
+        waitElementVisible(driver , nopComBaseUI.DYNAMIC_ICON_PAGE , icon);
+        return isElementDisplayed(driver , nopComBaseUI.DYNAMIC_ICON_PAGE , icon);
+    }
+
+    public boolean isDynamicIconPageUnDisplayed(WebDriver driver , String icon){
+        return isElementUndisplayed(driver , nopComBaseUI.DYNAMIC_ICON_PAGE , icon);
     }
 
 
