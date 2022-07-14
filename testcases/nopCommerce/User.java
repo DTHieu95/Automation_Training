@@ -2,6 +2,7 @@ package nopCommerce;
 
 import commons.BaseTest;
 import org.openqa.selenium.WebDriver;
+import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Parameters;
@@ -26,8 +27,16 @@ public class User extends BaseTest {
     searchPO searchPage;
     shopCartPO shopCartPage;
     computerPO computerPage;
-    String emailAddress , password , newPass , prodName , prodName1;
+    wishlistPO wishlistPage;
+    compareProdPO compareProdPage;
+    recentlyViewProdPO recentlyViewProdPage;
+    String emailAddress , password , newPass , prodName , prodName1 , skuProd, priceProd , prodSrc , compareSrc, compareSrc1;
     String FN , LN ,Company , Country , State , City , Add1 , Add2 , Zip , Phone , Fax , fullName;
+
+    String prodView , prodView2 , prodView3 , prodView4 , prodView5;
+    ArrayList<String> listProdView = new ArrayList<String>(Arrays.asList(prodView3 , prodView4 , prodView5));
+
+    String processor , ram , HDD, OS , Software , compareProd;
     ArrayList<String> listProdLenovo = new ArrayList<String>(Arrays.asList("Lenovo IdeaCentre 600 All-in-One PC" , "Lenovo Thinkpad X1 Carbon Laptop"));
 
     @Parameters({"browser", "url"})
@@ -53,6 +62,19 @@ public class User extends BaseTest {
         fullName = FN + " " + LN;
         prodName = "Build your own computer";
         prodName1 = "Apple MacBook Pro 13-inch";
+
+        compareProd = "Digital Storm VANQUISH 3 Custom Performance PC";
+        compareSrc = prodName.toLowerCase().replace(" " , "-");
+        compareSrc1 = compareProd.toLowerCase().replace(" " , "-");
+
+
+        processor = "2.2 GHz Intel Pentium Dual-Core E2200";
+        ram = "2GB";
+        HDD = "320GB";
+        OS = "Vista Home [+$50.00]";
+        Software = "Microsoft Office [+$50.00]";
+        prodSrc = prodName1.toLowerCase().replace(" " , "-");
+        compareSrc = compareProd.toLowerCase().replace(" " , "-");
         homePage = pageGenerator.getHomePage(driver);
         verifyTrue(homePage.isWelcomeMsgDisplayed());
         homePage.clickToDynamicMenuHeader(driver , "Register");
@@ -375,6 +397,132 @@ public class User extends BaseTest {
         verifyTrue(computerPage.isNumberProdDisplayedCorrect(driver , 9));
         verifyTrue(computerPage.isDynamicIconPageUnDisplayed(driver , "next"));
         verifyTrue(computerPage.isDynamicIconPageUnDisplayed(driver , "previous"));
+    }
+
+    @Test
+    public void TC_28(){
+        computerPage.clickToDynamicLinkText(driver , prodName1);
+        prodDetailPage = pageGenerator.getProdDetailPage(driver);
+
+        skuProd = prodDetailPage.getDynamicInfoProduct("sku-4");
+        priceProd = prodDetailPage.getDynamicInfoProduct("price-value-4");
+        prodDetailPage.clickToDynamicButton(driver , "Add to wishlist");
+
+        Assert.assertEquals(prodDetailPage.getSuccessMsgBar(driver) , "The product has been added to your\nwishlist");
+        prodDetailPage.clickToDynamicLinkText(driver , "wishlist");
+
+        wishlistPage = pageGenerator.getWishlistPage(driver);
+        Assert.assertEquals(wishlistPage.getPageTitle(driver) , "Wishlist");
+        Assert.assertEquals(wishlistPage.getQtyCartOrWishlist(driver , "wishlist") , "(2)");
+
+        Assert.assertEquals(wishlistPage.getTextInDynamicTable(driver , "Wishlist" , "SKU" , "1") ,skuProd);
+        Assert.assertTrue(wishlistPage.getAttributeValueInInDynamicTable(driver , "src" , "Wishlist" , "Image" , "1").contains(prodSrc));
+        Assert.assertEquals(wishlistPage.getTextInDynamicTable(driver , "Wishlist" , "Product(s)" , "1") , prodName1);
+        Assert.assertEquals(wishlistPage.getTextInDynamicTable(driver , "Wishlist" , "Price" , "1") , priceProd);
+        Assert.assertEquals(wishlistPage.getAttributeValueInInDynamicTable(driver , "value" , "Wishlist" , "Qty" , "1") , "2");
+        Assert.assertEquals(wishlistPage.getTextInDynamicTable(driver , "Wishlist" , "Total" , "1") , "$" + String.valueOf(Float.valueOf(priceProd.replace("$" , "")) * 2));
+
+        wishlistPage.checkChexkboxDynamicProduct(prodName1);
+        wishlistPage.clickToDynamicButton(driver , "Add to cart");
+
+        shopCartPage = pageGenerator.getShopCartPage(driver);
+        Assert.assertEquals(shopCartPage.getPageTitle(driver) , "Shopping cart");
+
+        Assert.assertEquals(shopCartPage.getTextInDynamicTable(driver , "Shopping cart" , "SKU" , "1") ,skuProd);
+        Assert.assertTrue(shopCartPage.getAttributeValueInInDynamicTable(driver , "src" , "Shopping cart" , "Image" , "1").contains(prodSrc));
+        Assert.assertEquals(shopCartPage.getTextInDynamicTable(driver , "Shopping cart" , "Product(s)" , "1") , prodName1);
+        Assert.assertEquals(shopCartPage.getTextInDynamicTable(driver , "Shopping cart" , "Price" , "1") , priceProd);
+        Assert.assertEquals(shopCartPage.getAttributeValueInInDynamicTable(driver , "value" , "Shopping cart" , "Qty" , "1") , "2");
+        Assert.assertEquals(shopCartPage.getTextInDynamicTable(driver , "Shopping cart" , "Total" , "1") , "$" + String.valueOf(Float.valueOf(priceProd.replace("$" , "")) * 2));
+
+        Assert.assertEquals(shopCartPage.getQtyCartOrWishlist(driver , "wishlist") , "(0)");
+        Assert.assertEquals(shopCartPage.getQtyCartOrWishlist(driver , "cart") , "(2)");
+    }
+
+    @Test
+    public void TC_29(){
+        shopCartPage.clickToDynamicButton(driver , "Continue shopping");
+        homePage = pageGenerator.getHomePage(driver);
+        Assert.assertTrue(homePage.isWelcomeMsgDisplayed());
+
+        homePage.clickToDynamicLinkText(driver , prodName);
+        prodDetailPage = pageGenerator.getProdDetailPage(driver);
+
+        prodDetailPage.selectValueInDynamicDropdown(driver , "product_attribute_1" , processor);
+        prodDetailPage.selectValueInDynamicDropdown(driver , "product_attribute_2" , ram);
+        prodDetailPage.checkDynamicRadioBox(driver , HDD);
+        prodDetailPage.checkDynamicRadioBox(driver , OS);
+        prodDetailPage.checkDynamicRadioBox(driver , Software);
+
+        prodDetailPage.clickToDynamicButton(driver , "Add to wishlist");
+
+        Assert.assertEquals(prodDetailPage.getSuccessMsgBar(driver) , "The product has been added to your\nwishlist");
+        prodDetailPage.clickToDynamicLinkText(driver , "wishlist");
+        wishlistPage = pageGenerator.getWishlistPage(driver);
+        Assert.assertEquals(wishlistPage.getQtyCartOrWishlist(driver , "wishlist") , "(2)");
+
+        wishlistPage.clickDynamicIconRemove(prodName);
+        Assert.assertTrue(wishlistPage.isMsgNoDataDisplayed(driver , "Wishlist" , "The wishlist is empty!"));
+        Assert.assertEquals(wishlistPage.getQtyCartOrWishlist(driver , "wishlist") , "(0)");
+
+    }
+
+    @Test
+    public void TC_30(){
+        wishlistPage.hoverMenuAndClickToSubListMenu(driver , "Computers" , "Desktops");
+        computerPage = pageGenerator.getComputerPage(driver);
+
+        computerPage.clickToDynamicProductButton(driver , prodName , "Add to cart");
+        Assert.assertEquals(computerPage.getSuccessMsgBar(driver) , "The product has been added to your\nproduct comparison");
+
+        computerPage.clickToDynamicProductButton(driver , prodName1 , "Add to cart");
+        Assert.assertEquals(computerPage.getSuccessMsgBar(driver) , "The product has been added to your\nproduct comparison");
+
+        computerPage.clickToDynamicLinkText(driver , "product comparison");
+        compareProdPage = pageGenerator.getCompareProductPage(driver);
+        Assert.assertEquals(compareProdPage.getPageTitle(driver) , "Compare products");
+
+        Assert.assertTrue(compareProdPage.getAttributeDynamicTable("src" , "getAttributeDynamicTable" , "2").contains(compareSrc1));
+        Assert.assertTrue(compareProdPage.getAttributeDynamicTable("src" , "getAttributeDynamicTable" , "3").contains(compareSrc1));
+        Assert.assertEquals(compareProdPage.getTextInDynamicTable("product-name" , "2") , compareProd);
+        Assert.assertEquals(compareProdPage.getTextInDynamicTable("product-name" , "3") , prodName);
+        Assert.assertEquals(compareProdPage.getTextInDynamicTable("product-price" , "2") , "$1,259.00");
+        Assert.assertEquals(compareProdPage.getTextInDynamicTable("product-price" , "3") , "$1,200.00");
+
+        compareProdPage.clickToDynamicButton(driver , "Clear list");
+        Assert.assertTrue(compareProdPage.isMsgNoDataDisplayed(driver , "Compare products" , "You have no items to compare."));
+
+    }
+
+    @Test
+    public void TC_31(){
+        compareProdPage.hoverMenuAndClickToSubListMenu(driver , "Computers" , "Notebooks");
+        computerPage = pageGenerator.getComputerPage(driver);
+
+        computerPage.clickToDynamicLinkText(driver , prodView);
+        prodDetailPage = pageGenerator.getProdDetailPage(driver);
+        prodDetailPage.backToPage(driver);
+
+        computerPage.clickToDynamicLinkText(driver , prodView2);
+        prodDetailPage = pageGenerator.getProdDetailPage(driver);
+        prodDetailPage.backToPage(driver);
+
+        computerPage.clickToDynamicLinkText(driver , prodView3);
+        prodDetailPage = pageGenerator.getProdDetailPage(driver);
+        prodDetailPage.backToPage(driver);
+
+        computerPage.clickToDynamicLinkText(driver , prodView4);
+        prodDetailPage = pageGenerator.getProdDetailPage(driver);
+        prodDetailPage.backToPage(driver);
+
+        computerPage.clickToDynamicLinkText(driver , prodView5);
+        prodDetailPage = pageGenerator.getProdDetailPage(driver);
+
+        prodDetailPage.clickToDynamicFooterLink(driver , "Recently viewed products");
+        recentlyViewProdPage = pageGenerator.getRecentlyViewProdPage(driver);
+
+        Assert.assertTrue(recentlyViewProdPage.isListProdViewCorrect(listProdView));
+
     }
 
 }

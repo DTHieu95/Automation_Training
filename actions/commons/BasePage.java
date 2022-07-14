@@ -783,6 +783,33 @@ public class BasePage {
         return isElementUndisplayed(driver , nopComBaseUI.DYNAMIC_ICON_PAGE , icon);
     }
 
+    public String getTextInDynamicTable(WebDriver driver , String tableName , String nameColumn , String rowIndex){
+        int columnIndex = getElementsize(driver , nopComBaseUI.DYNAMIC_TABLE_COLUMN , tableName , nameColumn) + 1;
+        waitElementVisible(driver , nopComBaseUI.DYNAMIC_TABLE_ROW , tableName , rowIndex , String.valueOf(columnIndex));
+        return getElementText(driver , nopComBaseUI.DYNAMIC_TABLE_ROW , tableName , rowIndex , String.valueOf(columnIndex));
+    }
+
+    public String getAttributeValueInInDynamicTable(WebDriver driver ,String attribute , String tableName , String nameColumn , String rowIndex){
+        int columnIndex = getElementsize(driver , nopComBaseUI.DYNAMIC_TABLE_COLUMN , tableName , nameColumn) + 1;
+        waitElementVisible(driver , nopComBaseUI.DYNAMIC_TABLE_ROW , tableName , rowIndex , String.valueOf(columnIndex));
+        return getAttributeValue(driver , nopComBaseUI.DYNAMIC_TABLE_ROW , attribute , tableName , rowIndex , String.valueOf(columnIndex));
+    }
+
+    public String getQtyCartOrWishlist(WebDriver driver , String type){
+        waitElementVisible(driver , nopComBaseUI.DYNAMIC_QTY_CART_WISHLIST , type);
+        return getElementText(driver , nopComBaseUI.DYNAMIC_QTY_CART_WISHLIST , type);
+    }
+
+    public boolean isMsgNoDataDisplayed(WebDriver driver , String pageName , String msgContent){
+        waitElementVisible(driver , nopComBaseUI.DYNAMIC_MESSAGE_NO_DATA , pageName , msgContent);
+        return isElementDisplayed(driver , nopComBaseUI.DYNAMIC_MESSAGE_NO_DATA , pageName, msgContent);
+    }
+
+    public void clickToDynamicProductButton(WebDriver driver , String prodName , String buttonName){
+        waitElementClickable(driver , nopComBaseUI.DYNAMIC_PRODUCT_BUTTON , prodName , buttonName);
+        clickToElement(driver , nopComBaseUI.DYNAMIC_PRODUCT_BUTTON , prodName , buttonName);
+    }
+
 
 
 

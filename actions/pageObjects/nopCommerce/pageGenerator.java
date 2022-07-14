@@ -52,5 +52,17 @@ public class pageGenerator {
         return new computerPO(driver);
     }
 
+    public static wishlistPO getWishlistPage(WebDriver driver){
+        return new wishlistPO(driver);
+    }
+
+    public static compareProdPO getCompareProductPage(WebDriver driver){
+        return new compareProdPO(driver);
+    }
+
+    public static recentlyViewProdPO getRecentlyViewProdPage(WebDriver driver){
+        return new recentlyViewProdPO(driver);
+    }
+
 
 }

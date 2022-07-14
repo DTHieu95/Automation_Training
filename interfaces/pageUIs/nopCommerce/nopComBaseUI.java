@@ -42,4 +42,16 @@ public class nopComBaseUI {
     public static final String CURRENT_PAGE = "//li[@class = 'current-page']/span";
 
     public static final String DYNAMIC_ICON_PAGE = "//li[@class = '%s-page']/a";
+
+    public static final String DYNAMIC_TABLE_ROW = "//h1[text() = '%s']/parent::div/following-sibling::div//table/tbody/tr[%s]/td[%s]";
+
+    public static final String DYNAMIC_TABLE_COLUMN = "//h1[text() = '%s']/parent::div/following-sibling::div//table//th[contains(string() , '%s')]/preceding-sibling::th";
+
+    public static final String DYNAMIC_QTY_CART_WISHLIST = "//span[@class = '%s-qty']";
+
+    public static final String DYNAMIC_MESSAGE_NO_DATA = "//h1[contains(string() , '%s')]/parent::div/following-sibling::div/div[@class = 'no-data' and  contains(string() , '%s')]";
+
+    public static final String DYNAMIC_PRODUCT_BUTTON = "//a[text() = '%s']/parent::h2/following-sibling::div//button[text() = '%s']";
+
+
 }
