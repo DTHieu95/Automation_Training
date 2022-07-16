@@ -1,5 +1,6 @@
 package nopCommerce;
 
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import commons.BaseTest;
 import org.openqa.selenium.WebDriver;
 import org.testng.Assert;
@@ -522,6 +523,98 @@ public class User extends BaseTest {
         recentlyViewProdPage = pageGenerator.getRecentlyViewProdPage(driver);
 
         Assert.assertTrue(recentlyViewProdPage.isListProdViewCorrect(listProdView));
+
+    }
+
+    @Test
+    public void TC_32(){
+        recentlyViewProdPage.clickToIconPage(driver);
+        homePage = pageGenerator.getHomePage(driver);
+        Assert.assertTrue(homePage.isWelcomeMsgDisplayed());
+
+        homePage.clickToDynamicLinkText(driver , prodName);
+        prodDetailPage = pageGenerator.getProdDetailPage(driver);
+
+        prodDetailPage.selectValueInDynamicDropdown(driver , "product_attribute_1" , "2.5 GHz Intel Pentium Dual-Core E2200 [+$15.00]");
+        prodDetailPage.selectValueInDynamicDropdown(driver , "product_attribute_2" , "8GB [+$60.00]");
+        prodDetailPage.checkDynamicRadioBox(driver , "400 GB [+$100.00]");
+        prodDetailPage.checkDynamicRadioBox(driver , "Vista Premium [+$60.00]");
+        prodDetailPage.checkDynamicRadioBox(driver , "Microsoft Office [+$50.00]");
+        prodDetailPage.checkDynamicRadioBox(driver , "Acrobat Reader [+$10.00]");
+        prodDetailPage.checkDynamicRadioBox(driver , "Total Commander [+$5.00]");
+
+        prodDetailPage.clickToDynamicButton(driver , "Add to cart");
+        Assert.assertEquals(prodDetailPage.getSuccessMsgBar(driver) , "The product has been added to your\nshopping cart");
+        prodDetailPage.clickToDynamicLinkText(driver , "shopping cart");
+
+        shopCartPage = pageGenerator.getShopCartPage(driver);
+        shopCartPage.hoverDynamicIconInHeader(driver , "cart");
+
+        Assert.assertEquals(shopCartPage.getInfoMiniCartHeader(driver , "count") , "There are\n1 item(s)\nin your cart.");
+        Assert.assertTrue(shopCartPage.getValueProdFirstMiniShopCart(driver , "href" , "picture").contains(prodName.toLowerCase().replace(" " , "-")));
+        Assert.assertEquals(shopCartPage.getInfoProdFirstMiniShopCart(driver , "name") , prodName);
+        Assert.assertEquals(shopCartPage.getInfoProdFirstMiniShopCart(driver , "attributes") , "Processor: 2.5 GHz Intel Pentium Dual-Core E2200 [+$15.00]\nRAM: 8GB [+$60.00]\nHDD: 400 GB [+$100.00]\nOS: Vista Premium [+$60.00]\nSoftware: Microsoft Office [+$50.00]\nSoftware: Acrobat Reader [+$10.00]\nSoftware: Total Commander [+$5.00]");
+        Assert.assertEquals(shopCartPage.getInfoProdFirstMiniShopCart(driver , "price") , "Unit price:\n$1,500.00");
+        Assert.assertEquals(shopCartPage.getInfoProdFirstMiniShopCart(driver , "quantity") , "Quantity:\n1");
+        Assert.assertEquals(shopCartPage.getInfoMiniCartHeader(driver , "totals") , "Sub-Total:\n$1,500.00");
+
+        shopCartPage.clickToDynamicLinkText(driver , "Edit");
+        prodDetailPage = pageGenerator.getProdDetailPage(driver);
+
+        prodDetailPage.selectValueInDynamicDropdown(driver , "product_attribute_1" , "2.2 GHz Intel Pentium Dual-Core E2200");
+        prodDetailPage.selectValueInDynamicDropdown(driver , "product_attribute_2" , "4GB [+$20.00]");
+        prodDetailPage.checkDynamicRadioBox(driver , "320 GB");
+        prodDetailPage.checkDynamicRadioBox(driver , "Vista Home [+$50.00]");
+        prodDetailPage.checkDynamicRadioBox(driver , "Microsoft Office [+$50.00]");
+        prodDetailPage.unCheckCheckBox(driver , "Acrobat Reader [+$10.00]");
+        prodDetailPage.unCheckCheckBox(driver , "Total Commander [+$5.00]");
+        prodDetailPage.clickToDynamicButton(driver , "Update");
+
+        Assert.assertEquals(prodDetailPage.getSuccessMsgBar(driver) , "The product has been added to your\nshopping cart");
+        prodDetailPage.clickToDynamicLinkText(driver , "shopping cart");
+
+        shopCartPage = pageGenerator.getShopCartPage(driver);
+
+        Assert.assertEquals(shopCartPage.getInfoMiniCartHeader(driver , "count") , "There are\n2 item(s)\nin your cart.");
+        Assert.assertTrue(shopCartPage.getValueProdFirstMiniShopCart(driver , "href" , "picture").contains(prodName.toLowerCase().replace(" " , "-")));
+        Assert.assertEquals(shopCartPage.getInfoProdFirstMiniShopCart(driver , "name") , prodName);
+        Assert.assertEquals(shopCartPage.getInfoProdFirstMiniShopCart(driver , "attributes") , "Processor: 2.2 GHz Intel Pentium Dual-Core E2200\nRAM: 4GB [+$20.00]\nHDD: 320 GB\nOS: Vista Home [+$50.00]\nSoftware: Microsoft Office [+$50.00]");
+        Assert.assertEquals(shopCartPage.getInfoProdFirstMiniShopCart(driver , "price") , "Unit price:\n$1,320.00");
+        Assert.assertEquals(shopCartPage.getInfoProdFirstMiniShopCart(driver , "quantity") , "Quantity:\n2");
+        Assert.assertEquals(shopCartPage.getInfoMiniCartHeader(driver , "totals") , "Sub-Total:\n$2,640.00");
+
+        shopCartPage.clickToDynamicIconRemoveInCart(prodName);
+        Assert.assertTrue(shopCartPage.isMsgNoDataDisplayed(driver , "Shopping cart" , "Your Shopping Cart is empty!"));
+    }
+
+    @Test
+    public void TC_33(){
+        String prodCheck = "Lenovo IdeaCentre 600 All-in-One PC";
+        shopCartPage.hoverMenuAndClickToSubListMenu(driver , "Computers" , "Desktops");
+        computerPage = pageGenerator.getComputerPage(driver);
+        computerPage.clickToDynamicLinkText(driver , "Lenovo IdeaCentre 600 All-in-One PC");
+        prodDetailPage.clickToDynamicButton(driver , "Add to cart");
+        Assert.assertEquals(prodDetailPage.getSuccessMsgBar(driver) , "The product has been added to your\nshopping cart");
+        prodDetailPage.clickToDynamicLinkText(driver , "shopping cart");
+        shopCartPage = pageGenerator.getShopCartPage(driver);
+
+        Assert.assertEquals(shopCartPage.getTextInDynamicTable(driver , "Shopping cart" , "SKU" , "1") , "LE_IC_600");
+        Assert.assertTrue(shopCartPage.getAttributeValueInInDynamicTable(driver , "src" , "Shopping cart" , "Image" , "1").contains(prodCheck.toLowerCase().replace(" " , "-")));
+        Assert.assertEquals(shopCartPage.getTextInDynamicTable(driver , "Shopping cart" , "Product (s)" , "1") , prodCheck);
+        Assert.assertEquals(shopCartPage.getTextInDynamicTable(driver , "Shopping cart" , "Price" , "1") , "Price:\n$500.00");
+        Assert.assertEquals(shopCartPage.getAttributeValueInInDynamicTable(driver , "value" ,"Shopping cart" , "Qty." , "1") , "1");
+        Assert.assertEquals(shopCartPage.getTextInDynamicTable(driver , "Shopping cart" , "Total" , "1") , "Total:\n$500.00");
+
+        shopCartPage.updateQuantityProduct(driver ,"Lenovo IdeaCentre 600 All-in-One PC" , "5");
+        shopCartPage.clickToDynamicButton(driver , "Update shopping cart");
+
+        Assert.assertEquals(shopCartPage.getTextInDynamicTable(driver , "Shopping cart" , "SKU" , "1") , "LE_IC_600");
+        Assert.assertTrue(shopCartPage.getAttributeValueInInDynamicTable(driver , "src" , "Shopping cart" , "Image" , "1").contains(prodCheck.toLowerCase().replace(" " , "-")));
+        Assert.assertEquals(shopCartPage.getTextInDynamicTable(driver , "Shopping cart" , "Product (s)" , "1") , prodCheck);
+        Assert.assertEquals(shopCartPage.getTextInDynamicTable(driver , "Shopping cart" , "Price" , "1") , "Price:\n$500.00");
+        Assert.assertEquals(shopCartPage.getAttributeValueInInDynamicTable(driver , "value" ,"Shopping cart" , "Qty." , "1") , "5");
+        Assert.assertEquals(shopCartPage.getTextInDynamicTable(driver , "Shopping cart" , "Total" , "1") , "Total:\n$2500.00");
+
 
     }
 

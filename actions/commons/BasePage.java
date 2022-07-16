@@ -265,7 +265,7 @@ public class BasePage {
 
     public String getElementText(WebDriver driver, String locator, String... params) {
 
-        return getElement(driver, locator).getText();
+        return getElement(driver, locator).getText().trim();
     }
 
     public void checktoCheckBoxOrRadio(WebDriver driver, String locator) {
@@ -808,6 +808,51 @@ public class BasePage {
     public void clickToDynamicProductButton(WebDriver driver , String prodName , String buttonName){
         waitElementClickable(driver , nopComBaseUI.DYNAMIC_PRODUCT_BUTTON , prodName , buttonName);
         clickToElement(driver , nopComBaseUI.DYNAMIC_PRODUCT_BUTTON , prodName , buttonName);
+    }
+
+    public void clickToIconPage(WebDriver driver){
+        waitElementClickable(driver , nopComBaseUI.LOGO_LINK_HOME_PAGE);
+        clickToElement(driver , nopComBaseUI.LOGO_LINK_HOME_PAGE);
+    }
+
+    public String getInfoProdFirstMiniShopCart(WebDriver driver , String className){
+        waitElementVisible(driver , nopComBaseUI.MINI_SHOP_CART_INFO_FIRST , className);
+        return getElementText(driver , nopComBaseUI.MINI_SHOP_CART_INFO_FIRST , className);
+    }
+
+    public String getValueProdFirstMiniShopCart(WebDriver driver , String attribute , String className){
+        waitElementVisible(driver , nopComBaseUI.MINI_SHOP_CART_INFO_FIRST , className);
+        return getAttributeValue(driver , nopComBaseUI.MINI_SHOP_CART_INFO_FIRST , attribute , className);
+    }
+
+    public String getInfoProdMiniShopCart(WebDriver driver , String rowIndex , String className){
+        waitElementVisible(driver , nopComBaseUI.MINI_SHOP_CART_INFO , rowIndex , className);
+        return getElementText(driver , nopComBaseUI.MINI_SHOP_CART_INFO , rowIndex , className);
+    }
+
+    public String getValueProdMiniShopCart(WebDriver driver , String attribute , String rowIndex , String className){
+        waitElementVisible(driver , nopComBaseUI.MINI_SHOP_CART_INFO , rowIndex , className);
+        return getAttributeValue(driver , nopComBaseUI.MINI_SHOP_CART_INFO , attribute , rowIndex , className);
+    }
+
+    public void hoverDynamicIconInHeader(WebDriver driver , String iconName){
+        waitElementClickable(driver , nopComBaseUI.ICON_WISHLIST_CART_HEADER , iconName);
+        hoverElement(driver , nopComBaseUI.ICON_WISHLIST_CART_HEADER , iconName);
+    }
+
+    public String getInfoMiniCartHeader(WebDriver driver , String className){
+        waitElementVisible(driver , nopComBaseUI.INFO_MINI_CART , className);
+        return getElementText(driver , nopComBaseUI.INFO_MINI_CART , className);
+    }
+
+    public void uncheckRadioBox(WebDriver driver , String label){
+        waitElementClickable(driver , nopComBaseUI.DYNAMIC_CHECK_BOX , label);
+        unCheckCheckBox(driver , nopComBaseUI.DYNAMIC_CHECK_BOX , label);
+    }
+
+    public void updateQuantityProduct(WebDriver driver , String prodName , String value){
+        waitElementVisible(driver , nopComBaseUI.DYNAMIC_FIELD_INPUT_QUANTITY , prodName);
+        sendKeyToElement(driver , nopComBaseUI.DYNAMIC_FIELD_INPUT_QUANTITY , value , prodName);
     }
 
 

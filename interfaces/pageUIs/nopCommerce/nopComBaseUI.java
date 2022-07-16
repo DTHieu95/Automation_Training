@@ -53,5 +53,18 @@ public class nopComBaseUI {
 
     public static final String DYNAMIC_PRODUCT_BUTTON = "//a[text() = '%s']/parent::h2/following-sibling::div//button[text() = '%s']";
 
+    public static final String LOGO_LINK_HOME_PAGE = "//div[@class ='header-logo']/a";
+
+    public static final String MINI_SHOP_CART_INFO_FIRST = "//div[@class = 'item-first']//div[@class = '%s']";
+
+    public static final String MINI_SHOP_CART_INFO = "//div[@class = 'item'][%s]//div[@class = '%s']";
+
+    public static final String ICON_WISHLIST_CART_HEADER = "//a[@class = 'ico-%s']";
+
+    public static final String INFO_MINI_CART = "//div[@class = 'mini-shopping-cart']//div[@class = '%s']";
+
+    public static final String DYNAMIC_FIELD_INPUT_QUANTITY = "//a[text() = '%s']/parent::td/following-sibling::td[@class = 'quantity']//input";
+
+
 
 }
